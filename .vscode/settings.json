@@ -21,6 +21,7 @@
     ["cx\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
   "files.associations": {
+    "*.mdoc": "markdown",
     "*.css": "tailwindcss"
   }
 }
