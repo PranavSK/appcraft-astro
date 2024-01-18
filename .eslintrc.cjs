@@ -1,51 +1,22 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  plugins: ['solid', 'simple-import-sort', 'unused-imports'],
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:solid/typescript',
     'plugin:prettier/recommended',
+    'plugin:perfectionist/recommended-natural',
     // Moving astro later since prettier seem to cause issues with astro script blocks.
     'plugin:astro/recommended',
     'plugin:astro/jsx-a11y-recommended',
     'plugin:tailwindcss/recommended'
   ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: __dirname,
-    sourceType: 'module',
-    ecmaVersion: 'latest'
-  },
-  settings: {
-    tailwindcss: {
-      callees: ['cx', 'cva']
-    }
-  },
-  rules: {
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      {
-        vars: 'all',
-        args: 'after-used',
-        ignoreRestSiblings: true,
-        argsIgnorePattern: '^_'
-      }
-    ],
-    'no-console': 'error',
-    'no-alert': 'error',
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
-    // Support for eslint-plugin-prettier
-    'arrow-body-style': 'off',
-    'prefer-arrow-callback': 'off'
-  },
   overrides: [
     {
       files: ['*.astro'],
       parser: 'astro-eslint-parser',
       parserOptions: {
-        parser: '@typescript-eslint/parser',
-        extraFileExtensions: ['.astro']
+        extraFileExtensions: ['.astro'],
+        parser: '@typescript-eslint/parser'
       },
       rules: {
         // override/add rules settings here, such as:
@@ -74,5 +45,38 @@ module.exports = {
         'solid/style-prop': 'off'
       }
     }
-  ]
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    tsconfigRootDir: __dirname
+  },
+  plugins: ['solid', 'unused-imports'],
+  rules: {
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      {
+        disallowTypeAnnotations: true,
+        fixStyle: 'separate-type-imports',
+        prefer: 'type-imports'
+      }
+    ],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+        ignoreRestSiblings: true,
+        vars: 'all'
+      }
+    ],
+    'no-alert': 'error',
+    'no-console': 'error'
+  },
+  settings: {
+    tailwindcss: {
+      callees: ['cx', 'cva']
+    }
+  }
 }

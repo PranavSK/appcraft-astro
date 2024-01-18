@@ -1,6 +1,6 @@
 ---
-title: 'Second Sample'
-description: 'This is the second sample slide.'
+description: This is the second sample slide.
+title: Second Sample
 ---
 
 {% slide %}
@@ -12,6 +12,8 @@ This is the first sample slide.
 > This is a blockquote.
 
 And this is some text with `inline code`.
+
+EDIT: Changes from admin dashboard!!
 
 ---
 

@@ -1,0 +1,16 @@
+---
+import CollectionsAdminList from '@/components/navigation/collections-admin-list.astro'
+import { cx } from '@/lib/utils'
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+<aside class={cx('flex flex-col', className)}>
+  <div class='flex items-center justify-between border-b p-4'>
+    <h1 class='text-2xl font-bold'>Appcraft</h1>
+  </div>
+  <CollectionsAdminList />
+</aside>

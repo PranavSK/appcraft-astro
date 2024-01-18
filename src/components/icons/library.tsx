@@ -9,5 +9,5 @@ const iconNode = [
   ['path', { d: 'M4 4v16', key: '6qkkli' }]
 ] satisfies IconNode
 export const Library: Component<LucideProps> = (props) => (
-  <Icon {...props} name='Library' iconNode={iconNode} />
+  <Icon {...props} iconNode={iconNode} name='Library' />
 )

@@ -1,0 +1,78 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+import { ChevronRight } from '@/components/icons'
+import { cx } from '@/lib/utils'
+
+interface Props extends HTMLAttributes<'nav'> {}
+
+interface BreadcrumbItem {
+  href: string
+  text: string
+}
+
+const { class: className, ...navProps } = Astro.props
+
+const breadcrumItems: Array<BreadcrumbItem> = [
+  {
+    href: '/',
+    text: 'Home'
+  }
+]
+
+const pathSlugs = Astro.url.pathname.split('/').filter(Boolean)
+pathSlugs.forEach((slug, index) => {
+  const href = `/${pathSlugs.slice(0, index + 1).join('/')}`
+  const text = slug
+    .replace(/-/g, ' ')
+    .toLowerCase()
+    .replace(/\b\w/g, (s) => s.toUpperCase())
+  breadcrumItems.push({
+    href,
+    text
+  })
+})
+
+const schemaJson = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumItems.map((part, index) => ({
+    '@type': 'ListItem',
+    item: {
+      '@id': part.href,
+      name: part.text
+    },
+    position: index + 1
+  }))
+})
+---
+
+<nav class={cx('', className)} {...navProps}>
+  <ol class='inline-flex items-center gap-1 text-sm'>
+    {
+      breadcrumItems.map(({ href, text }, index) => {
+        const isCurrent = index === breadcrumItems.length - 1
+        return (
+          <>
+            <li class='inline-block'>
+              <a
+                aria-current={isCurrent ? 'location' : false}
+                class={cx(
+                  !isCurrent && 'underline-offset-4 hover:underline',
+                  isCurrent && 'pointer-events-none text-muted-foreground'
+                )}
+                href={href}
+              >
+                {text}
+              </a>
+            </li>
+            {index !== breadcrumItems.length - 1 && (
+              <ChevronRight class='inline-block size-4' />
+            )}
+          </>
+        )
+      })
+    }
+  </ol>
+</nav>
+<script set:html={schemaJson} type='application/ld+json' />

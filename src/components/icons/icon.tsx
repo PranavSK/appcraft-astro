@@ -1,17 +1,18 @@
-import { type Component, For, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js/jsx-runtime'
+
+import { type Component, For, splitProps } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 
 const defaultAttributes = {
-  xmlns: 'http://www.w3.org/2000/svg',
-  width: 24,
-  height: 24,
-  viewBox: '0 0 24 24',
   fill: 'none',
+  height: 24,
   stroke: 'currentColor',
-  'stroke-width': 2,
   'stroke-linecap': 'round',
-  'stroke-linejoin': 'round'
+  'stroke-linejoin': 'round',
+  'stroke-width': 2,
+  viewBox: '0 0 24 24',
+  width: 24,
+  xmlns: 'http://www.w3.org/2000/svg'
 } as const
 
 export type IconNode = [
@@ -20,17 +21,17 @@ export type IconNode = [
 ][]
 type SVGAttributes = Partial<JSX.SvgSVGAttributes<SVGSVGElement>>
 export interface LucideProps extends SVGAttributes {
-  key?: string | number
-  color?: string
-  size?: string | number
-  strokeWidth?: string | number
-  class?: string
   absoluteStrokeWidth?: boolean
+  class?: string
+  color?: string
+  key?: number | string
+  size?: number | string
+  strokeWidth?: number | string
 }
 
 interface IconProps {
-  name: string
   iconNode: IconNode
+  name: string
 }
 
 export const toKebabCase = (str: string) =>
@@ -49,7 +50,6 @@ export const Icon: Component<LucideProps & IconProps> = (props) => {
   return (
     <svg
       {...defaultAttributes}
-      width={localProps.size ?? defaultAttributes.width}
       height={localProps.size ?? defaultAttributes.height}
       stroke={localProps.color ?? defaultAttributes.stroke}
       stroke-width={
@@ -61,6 +61,7 @@ export const Icon: Component<LucideProps & IconProps> = (props) => {
             Number(localProps.size)
           : Number(localProps.strokeWidth ?? defaultAttributes['stroke-width'])
       }
+      width={localProps.size ?? defaultAttributes.width}
       {...rest}
     >
       <For each={localProps.iconNode}>

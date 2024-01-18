@@ -19,3 +19,7 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# A local types file to avoid error lines in vscode
+_types.d.ts
+src/lib/github/graphql-client

@@ -23,5 +23,6 @@
   "files.associations": {
     "*.mdoc": "markdown",
     "*.css": "tailwindcss"
-  }
+  },
+  "cSpell.words": ["codemirror", "frontmatter", "nanostores"]
 }

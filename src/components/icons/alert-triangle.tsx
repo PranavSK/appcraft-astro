@@ -14,5 +14,5 @@ const iconNode = [
   ['path', { d: 'M12 17h.01', key: 'p32p05' }]
 ] satisfies IconNode
 export const AlertTriangle: Component<LucideProps> = (props) => (
-  <Icon {...props} name='AlertTriangle' iconNode={iconNode} />
+  <Icon {...props} iconNode={iconNode} name='AlertTriangle' />
 )

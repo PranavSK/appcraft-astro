@@ -1,8 +1,11 @@
 ---
 import type { GetStaticPaths } from 'astro'
-import { getCollection } from 'astro:content'
 
+import { MarkdocRenderer } from '@/components/markdoc/renderer'
+import { markdocConfigs } from '@/content/config'
 import RootLayout from '@/layouts/root.astro'
+import Markdoc from '@markdoc/markdoc'
+import { getCollection } from 'astro:content'
 
 export const getStaticPaths = (async () => {
   const collection = await getCollection('slide')
@@ -17,24 +20,15 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths
 
 const { slide } = Astro.props
-const { Content, headings } = await slide.render()
+const ast = Markdoc.parse(slide.body)
+const nodes = Markdoc.transform(ast, markdocConfigs[slide.collection])
 ---
 
 <RootLayout class='relative'>
-  <main
-    id='slide-viewport'
-    role='region'
-    aria-roledescription='carousel'
-    class='overflow-hidden'
-    data-headings={JSON.stringify(headings.map((h) => h.slug))}
-  >
-    <article class='grid touch-pan-y auto-cols-[100%] grid-flow-col'>
-      <Content />
-    </article>
-  </main>
+  <MarkdocRenderer client:idle nodes={nodes} />
 </RootLayout>
 
-<script>
+<!-- <script>
   import EmblaCarousel from 'embla-carousel'
   const viewport = document.querySelector<HTMLElement>('#slide-viewport')
 
@@ -95,4 +89,4 @@ const { Content, headings } = await slide.render()
       prevButton.addEventListener('click', () => emblaApli.scrollPrev())
     }
   }
-</script>
+</script> -->

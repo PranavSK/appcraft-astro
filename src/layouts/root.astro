@@ -3,20 +3,20 @@ import '@fontsource/share-tech-mono'
 import '@fontsource-variable/urbanist'
 import '@fontsource-variable/urbanist/wght-italic.css'
 interface Props {
-  title?: string
-  description?: string
   class?: string
+  description?: string
+  title?: string
 }
-const { title = 'Appcraft Astro', description, class: className } = Astro.props
+const { class: className, description, title = 'Appcraft Astro' } = Astro.props
 ---
 
 <html lang='en'>
   <head>
     <meta charset='utf-8' />
-    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-    <meta name='viewport' content='width=device-width' />
-    <meta name='description' content={description} />
-    <meta name='generator' content={Astro.generator} />
+    <link href='/favicon.svg' rel='icon' type='image/svg+xml' />
+    <meta content='width=device-width, initial-scale=1.0' name='viewport' />
+    <meta content={description} name='description' />
+    <meta content={Astro.generator} name='generator' />
     <title>{title}</title>
   </head>
   <body class={className}>

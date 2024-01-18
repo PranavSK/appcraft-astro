@@ -10,7 +10,7 @@ const iconNode = [
       key: '1bg6eb'
     }
   ],
-  ['polyline', { points: '14 2 14 8 20 8', key: '1ew0cm' }],
+  ['polyline', { key: '1ew0cm', points: '14 2 14 8 20 8' }],
   [
     'path',
     {
@@ -20,5 +20,5 @@ const iconNode = [
   ]
 ] satisfies IconNode
 export const FileEdit: Component<LucideProps> = (props) => (
-  <Icon {...props} name='FileEdit' iconNode={iconNode} />
+  <Icon {...props} iconNode={iconNode} name='FileEdit' />
 )

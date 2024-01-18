@@ -1,11 +1,11 @@
 ---
 import type { GetStaticPaths } from 'astro'
-import { getCollection } from 'astro:content'
 
 import { File, FileEdit, Plus } from '@/components/icons'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { collections as collectionSchema } from '@/content/config'
 import DashboardLayout from '@/layouts/dashboard.astro'
+import { getCollection } from 'astro:content'
 
 export const getStaticPaths = (() => {
   const collections = Object.keys(collectionSchema) as Array<
@@ -26,31 +26,39 @@ const collectionItems = await getCollection(collection)
 
 <DashboardLayout>
   <h2 class='text-xl' slot='header'>{collection}</h2>
-  <Button slot='header'>
-    Create New <Plus class='ml-4 h-4 w-4' />
-  </Button>
+  <a
+    class={buttonVariants()}
+    href={`/admin/${collection}/create-new`}
+    slot='header'
+  >
+    Create New <Plus class='ml-4 size-4' />
+  </a>
   <div class='flex flex-col rounded-md bg-background text-foreground'>
     {
       collectionItems.map((item) => (
         <a
-          href={`/admin/${collection}/${item.slug}`}
           class='group flex items-center border border-t-0 px-4 py-2 first:rounded-t-md first:border-t last:rounded-b-md'
+          href={`/admin/${collection}/${item.slug}`}
         >
-          <File class='mr-2 h-4 w-4 group-hover:hidden' />
-          <FileEdit class='mr-2 hidden h-4 w-4 group-hover:block' />
-          <div class='grid grow grid-flow-col-dense grid-cols-6 grid-rows-2 text-xs'>
-            <span class='uppercase text-muted-foreground'>filename</span>
-            <span class='underline-offset-4 group-hover:underline'>
+          <File class='mr-2 size-4 group-hover:hidden' />
+          <FileEdit class='mr-2 hidden size-4 group-hover:block' />
+          <div class='grid grow text-xs grid-areas-collection-list md:grid-areas-collection-list-wide'>
+            <span class='uppercase text-muted-foreground grid-in-title-filename'>
+              filename
+            </span>
+            <span class='underline-offset-4 grid-in-filename group-hover:underline'>
               {item.id}
             </span>
-            <span class='uppercase text-muted-foreground'>slug</span>
-            <span>{item.slug}</span>
-            <span class='uppercase text-muted-foreground'>title</span>
-            <span>{item.data.title}</span>
-            <span class='col-span-3 uppercase text-muted-foreground'>
+            <span class='col-span-2 uppercase text-muted-foreground grid-in-title-title'>
+              title
+            </span>
+            <span class='grid-in-title'>{item.data.title}</span>
+            <span class='col-span-3 uppercase text-muted-foreground grid-in-title-description'>
               description
             </span>
-            <span class='col-span-3'>{item.data.description}</span>
+            <span class='col-span-3 grid-in-description'>
+              {item.data.description}
+            </span>
           </div>
         </a>
       ))

@@ -1,42 +1,25 @@
 ---
-import { AlertTriangle, Library, MoreVertical } from '@/components/icons'
-import { collections } from '@/content/config'
+import { MobileLeftPanel } from '@/components/mobile/left-panel'
+import Breadcrumbs from '@/components/navigation/breadcrumbs.astro'
+import DashboardSide from '@/components/navigation/dashboard-side.astro'
+import { DisplayDevMode } from '@/components/status/display-dev-mode'
 import RootLayout from '@/layouts/root.astro'
 ---
 
-<RootLayout title='Admin' class='grid min-h-screen grid-cols-4 grid-rows-1'>
-  <aside class='col-span-1 flex flex-col border-r'>
-    <div class='flex items-center justify-between border-b p-4'>
-      <h1 class='text-2xl font-bold'>Appcraft</h1>
-      <MoreVertical class='h-4 w-4' />
-    </div>
-    <div class='flex flex-col gap-4 p-4'>
-      <div class='flex flex-col gap-2'>
-        <h2 class='font-bold uppercase tracking-wide text-muted-foreground'>
-          Collections
-        </h2>
-        <ul class='flex flex-col gap-2'>
-          {
-            Object.keys(collections).map((collection) => (
-              <li class='flex items-center gap-2 underline-offset-4 hover:underline'>
-                <Library class='h-4 w-4 rounded-full bg-primary-foreground' />
-                <a href={`/admin/${collection}`}>{collection}</a>
-              </li>
-            ))
-          }
-        </ul>
+<RootLayout class='grid h-dvh grid-rows-1 lg:grid-cols-6' title='Admin'>
+  <DashboardSide class='hidden border-r lg:block' />
+  <main class='flex flex-col lg:col-span-5'>
+    <DisplayDevMode />
+    <header class='space-y-4 border-b px-6 py-4'>
+      <div class='flex items-center gap-2'>
+        <MobileLeftPanel class='size-4 lg:hidden' client:visible>
+          <DashboardSide />
+        </MobileLeftPanel>
+        <Breadcrumbs />
       </div>
-    </div>
-  </aside>
-  <main class='col-span-3 flex flex-col'>
-    <div
-      class='flex items-center bg-warning p-1 text-sm text-warning-foreground'
-    >
-      <AlertTriangle class='mr-2 inline-block h-3 w-3' /> You are currently in local
-      development mode.
-    </div>
-    <header class='flex h-24 items-end justify-between border-b px-6 py-4'>
-      <slot name='header'><h2 class='text-xl'>Welcome to Appcraft</h2></slot>
+      <div class='flex items-center justify-between'>
+        <slot name='header'><h2 class='text-xl'>Welcome</h2></slot>
+      </div>
     </header>
     <div class='flex-1 overflow-auto bg-muted p-6 text-muted-foreground'>
       <slot />
