@@ -1,0 +1,26 @@
+name: 🎯 Feature request
+description: Suggest an idea or change
+title: '[Feat] <title>'
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes:
+      label: 'Feature Description'
+      description: 'Describe the idea or changes required.'
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 'Alternatives'
+      description: 'Describe possible alternative approaches.'
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: 'Context'
+      description: |
+        Provide any additional details required.
+
+        If the feature requires significant work please break it down into a task list here.
+    validations:
+      required: false
