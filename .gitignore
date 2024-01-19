@@ -22,4 +22,5 @@ pnpm-debug.log*
 
 # A local types file to avoid error lines in vscode
 _types.d.ts
+.netlify
 src/lib/github/graphql-client
