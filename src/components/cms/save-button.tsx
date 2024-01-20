@@ -1,6 +1,7 @@
 import type { SaveInput } from '@/lib/trpc/server/router'
 import type { Component } from 'solid-js'
 
+import { useSharedContentState } from '@/components/cms/shared'
 import { MobileBottomPanel } from '@/components/mobile/bottom-panel'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,8 +25,9 @@ import { toast } from '@/components/ui/toaster'
 import { trpc } from '@/lib/trpc/client'
 import { createEffect, createSignal } from 'solid-js'
 
-type SaveButtonProps = SaveInput
+type SaveButtonProps = Omit<SaveInput, 'body'>
 export const SaveButton: Component<SaveButtonProps> = (props) => {
+  const content = useSharedContentState()
   const [slug, setSlug] = createSignal('')
   const [message, setMessage] = createSignal('')
   const [open, setOpen] = createSignal(false)
@@ -36,6 +38,7 @@ export const SaveButton: Component<SaveButtonProps> = (props) => {
     toast.promise(
       trpc.cms.save.mutate({
         ...props,
+        body: content(),
         message: message() === '' ? undefined : message(),
         slug: slug()
       }),

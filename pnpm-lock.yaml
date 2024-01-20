@@ -56,6 +56,9 @@ dependencies:
   '@markdoc/markdoc':
     specifier: ^0.4.0
     version: 0.4.0
+  '@nanostores/solid':
+    specifier: ^0.4.2
+    version: 0.4.2(nanostores@0.9.5)(solid-js@1.8.11)
   '@t3-oss/env-core':
     specifier: ^0.7.3
     version: 0.7.3(typescript@5.3.3)(zod@3.22.4)
@@ -80,6 +83,9 @@ dependencies:
   embla-carousel-solid:
     specifier: 8.0.0-rc19
     version: 8.0.0-rc19(solid-js@1.8.11)
+  nanostores:
+    specifier: ^0.9.5
+    version: 0.9.5
   solid-codemirror:
     specifier: ^2.3.1
     version: 2.3.1(@codemirror/state@6.4.0)(@codemirror/view@6.23.0)(solid-js@1.8.11)
@@ -2130,6 +2136,16 @@ packages:
         optional: true
     optionalDependencies:
       '@types/markdown-it': 12.2.3
+    dev: false
+
+  /@nanostores/solid@0.4.2(nanostores@0.9.5)(solid-js@1.8.11):
+    resolution: {integrity: sha512-8v32+C9KdRbnvP4x4Oiw/CtL1tZwbRxYfmFsPIY9PXevCgxSFnicG6VnLLtNAR7F0kl8Ec7OROHO34Ffv0KDzg==}
+    peerDependencies:
+      nanostores: '>=0.8.0'
+      solid-js: ^1.6.0
+    dependencies:
+      nanostores: 0.9.5
+      solid-js: 1.8.11
     dev: false
 
   /@netlify/binary-info@1.0.0:
@@ -10410,6 +10426,11 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /nanostores@0.9.5:
+    resolution: {integrity: sha512-Z+p+g8E7yzaWwOe5gEUB2Ox0rCEeXWYIZWmYvw/ajNYX8DlXdMvMDj8DWfM/subqPAcsf8l8Td4iAwO1DeIIRQ==}
+    engines: {node: ^16.0.0 || ^18.0.0 || >=20.0.0}
+    dev: false
 
   /napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}

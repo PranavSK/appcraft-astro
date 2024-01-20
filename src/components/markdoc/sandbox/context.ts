@@ -1,5 +1,5 @@
 import type { Node, RenderableTreeNodes, ValidateError } from '@markdoc/markdoc'
-import type { Accessor, Setter } from 'solid-js'
+import type { Accessor } from 'solid-js'
 
 import { createContext, useContext } from 'solid-js'
 
@@ -8,7 +8,7 @@ interface SandboxContextData {
   content: Accessor<string>
   errors: Accessor<ValidateError[]>
   renderNodes: Accessor<RenderableTreeNodes>
-  setContent: Setter<string>
+  setContent: (content: string) => void
 }
 
 const sandboxContext = createContext<SandboxContextData | null>(null)

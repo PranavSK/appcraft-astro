@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro'
 import type { CollectionKey } from 'astro:content'
 
+import { SaveButton } from '@/components/cms/save-button'
 import { Sandbox } from '@/components/markdoc/sandbox'
 import { collections } from '@/content/config'
 import DashboardLayout from '@/layouts/dashboard.astro'
@@ -50,6 +51,14 @@ const initialContent = `${frontmatter}${body}`
 ---
 
 <DashboardLayout class='h-dvh'>
+  <h2 class='text-xl' slot='header'>{item?.id ?? 'Create New'}</h2>
+  <SaveButton
+    client:idle
+    collection={collection}
+    extension='md'
+    slot='header'
+    slug={slug}
+  />
   <Sandbox
     class='size-full'
     client:load
