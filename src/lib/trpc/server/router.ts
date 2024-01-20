@@ -1,4 +1,4 @@
-import { saveFile } from '@/lib/github'
+import { deleteFiles, saveFile } from '@/lib/github'
 import { type inferRouterInputs, initTRPC } from '@trpc/server'
 import { z } from 'zod'
 
@@ -24,6 +24,35 @@ export const adminProcedure = publicProcedure //.use(isAdmin)
 
 export const appRouter = t.router({
   cms: t.router({
+    delete: adminProcedure
+      .input(
+        z.array(
+          z.object({
+            collection: z.string().min(1),
+            extension: z.string().min(1),
+            slug: z.string().min(1)
+          })
+        )
+      )
+      .mutation(async ({ input }) => {
+        if (import.meta.env.DEV) {
+          const { dirname, resolve } = await import('path')
+          const { fileURLToPath } = await import('url')
+          const { unlink } = await import('fs/promises')
+          await Promise.all(
+            input.map(async ({ collection, extension, slug }) => {
+              const destination = resolve(
+                dirname(fileURLToPath(import.meta.url)),
+                `../../../content/${collection}`,
+                `${slug}.${extension.startsWith('.') ? extension.slice(1) : extension}`
+              )
+              await unlink(destination)
+            })
+          )
+        } else {
+          await deleteFiles(input)
+        }
+      }),
     save: adminProcedure
       .input(
         z.object({
@@ -47,7 +76,7 @@ export const appRouter = t.router({
           )
           await writeFile(destination, body)
         } else {
-          saveFile(input)
+          await saveFile(input)
         }
       })
   })

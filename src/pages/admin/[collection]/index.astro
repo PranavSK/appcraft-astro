@@ -1,7 +1,8 @@
 ---
 import type { GetStaticPaths } from 'astro'
 
-import { File, FileEdit, Plus } from '@/components/icons'
+import { CollectionTable } from '@/components/cms/collection-table'
+import { Plus } from '@/components/icons'
 import { buttonVariants } from '@/components/ui/button'
 import { collections as collectionSchema } from '@/content/config'
 import DashboardLayout from '@/layouts/dashboard.astro'
@@ -33,35 +34,16 @@ const collectionItems = await getCollection(collection)
   >
     Create New <Plus class='ml-4 size-4' />
   </a>
-  <div class='flex flex-col rounded-md bg-background text-foreground'>
-    {
-      collectionItems.map((item) => (
-        <a
-          class='group flex items-center border border-t-0 px-4 py-2 first:rounded-t-md first:border-t last:rounded-b-md'
-          href={`/admin/${collection}/${item.slug}`}
-        >
-          <File class='mr-2 size-4 group-hover:hidden' />
-          <FileEdit class='mr-2 hidden size-4 group-hover:block' />
-          <div class='grid grow text-xs grid-areas-collection-list md:grid-areas-collection-list-wide'>
-            <span class='uppercase text-muted-foreground grid-in-title-filename'>
-              filename
-            </span>
-            <span class='underline-offset-4 grid-in-filename group-hover:underline'>
-              {item.id}
-            </span>
-            <span class='col-span-2 uppercase text-muted-foreground grid-in-title-title'>
-              title
-            </span>
-            <span class='grid-in-title'>{item.data.title}</span>
-            <span class='col-span-3 uppercase text-muted-foreground grid-in-title-description'>
-              description
-            </span>
-            <span class='col-span-3 grid-in-description'>
-              {item.data.description}
-            </span>
-          </div>
-        </a>
-      ))
-    }
-  </div>
+  <CollectionTable
+    client:idle
+    items={collectionItems.map(
+      ({ collection, data: { description, title }, id, slug }) => ({
+        collection,
+        description,
+        extension: id.split('.').pop() ?? '',
+        slug,
+        title
+      })
+    )}
+  />
 </DashboardLayout>
