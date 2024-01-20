@@ -10,7 +10,7 @@ import RootLayout from '@/layouts/root.astro'
   <DashboardSide class='hidden border-r lg:block' />
   <main class='flex flex-col lg:col-span-5'>
     <DisplayDevMode />
-    <header class='space-y-4 border-b px-6 py-4'>
+    <header class='space-y-4 border-b p-4'>
       <div class='flex items-center gap-2'>
         <MobileLeftPanel class='size-4 lg:hidden' client:visible>
           <DashboardSide />
@@ -21,7 +21,7 @@ import RootLayout from '@/layouts/root.astro'
         <slot name='header'><h2 class='text-xl'>Welcome</h2></slot>
       </div>
     </header>
-    <div class='flex-1 overflow-auto bg-muted p-6 text-muted-foreground'>
+    <div class='flex-1 overflow-auto bg-muted p-0 text-muted-foreground'>
       <slot />
     </div>
   </main>
