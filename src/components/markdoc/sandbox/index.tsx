@@ -46,9 +46,9 @@ export const Sandbox: Component<SandboxProps> = (props) => {
           <TabsTrigger value='editor'>Editor</TabsTrigger>
           <TabsTrigger value='preview'>Preview</TabsTrigger>
           <SaveButton
+            body={content()}
             collection={props.collection}
-            content={content()}
-            ext='md'
+            extension='md'
             slug={props.slug}
           />
         </TabsList>

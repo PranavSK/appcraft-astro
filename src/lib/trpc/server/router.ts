@@ -1,3 +1,4 @@
+import { saveFile } from '@/lib/github'
 import { type inferRouterInputs, initTRPC } from '@trpc/server'
 import { z } from 'zod'
 
@@ -26,26 +27,27 @@ export const appRouter = t.router({
     save: adminProcedure
       .input(
         z.object({
+          body: z.string(),
           collection: z.string().min(1),
-          content: z.string(),
-          ext: z.string().min(1),
+          extension: z.string().min(1),
+          message: z.string().optional(),
           slug: z.string().min(1)
         })
       )
       .mutation(async ({ input }) => {
-        const { collection, content, ext, slug } = input
         if (import.meta.env.DEV) {
+          const { body, collection, extension, slug } = input
           const { dirname, resolve } = await import('path')
           const { fileURLToPath } = await import('url')
           const { writeFile } = await import('fs/promises')
           const destination = resolve(
             dirname(fileURLToPath(import.meta.url)),
             `../../../content/${collection}`,
-            `${slug}.${ext.startsWith('.') ? ext.slice(1) : ext}`
+            `${slug}.${extension.startsWith('.') ? extension.slice(1) : extension}`
           )
-          await writeFile(destination, content)
+          await writeFile(destination, body)
         } else {
-          throw new Error('Not implemented')
+          saveFile(input)
         }
       })
   })
