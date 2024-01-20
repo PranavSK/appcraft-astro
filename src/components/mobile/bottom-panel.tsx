@@ -1,8 +1,10 @@
 import type { ComponentProps, JSXElement, ParentComponent } from 'solid-js'
 
-import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { splitProps } from 'solid-js'
 
-interface MobileBottomPanelProps {
+interface MobileBottomPanelProps
+  extends Pick<ComponentProps<typeof Sheet>, 'onOpenChange' | 'open'> {
   class?: string
   triggerAs?: ComponentProps<typeof SheetTrigger>['as']
   triggerContent?: JSXElement
@@ -10,13 +12,18 @@ interface MobileBottomPanelProps {
 export const MobileBottomPanel: ParentComponent<MobileBottomPanelProps> = (
   props
 ) => {
+  const [triggerProps, contentProps, rootProps] = splitProps(
+    props,
+    ['class', 'triggerAs', 'triggerContent'],
+    ['children']
+  )
   return (
-    <Sheet>
-      <SheetTrigger as={props.triggerAs} class={props.class}>
-        {props.triggerContent}
+    <Sheet {...rootProps}>
+      <SheetTrigger as={triggerProps.triggerAs} class={triggerProps.class}>
+        {triggerProps.triggerContent}
       </SheetTrigger>
       <SheetContent position='bottom' size='xl'>
-        {props.children}
+        {contentProps.children}
       </SheetContent>
     </Sheet>
   )

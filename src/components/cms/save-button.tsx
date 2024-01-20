@@ -28,6 +28,7 @@ type SaveButtonProps = SaveInput
 export const SaveButton: Component<SaveButtonProps> = (props) => {
   const [slug, setSlug] = createSignal('')
   const [message, setMessage] = createSignal('')
+  const [open, setOpen] = createSignal(false)
 
   createEffect(() => setSlug(props.slug === 'create-new' ? '' : props.slug))
 
@@ -59,6 +60,7 @@ export const SaveButton: Component<SaveButtonProps> = (props) => {
         })
       }
     )
+    setOpen(false)
   }
 
   const Title = () => <>Confirm Save</>
@@ -110,6 +112,8 @@ export const SaveButton: Component<SaveButtonProps> = (props) => {
     <>
       <MobileBottomPanel
         class='lg:hidden'
+        onOpenChange={setOpen}
+        open={open()}
         triggerAs={Button}
         triggerContent='Save'
       >
@@ -126,7 +130,7 @@ export const SaveButton: Component<SaveButtonProps> = (props) => {
           </SheetFooter>
         </SheetHeader>
       </MobileBottomPanel>
-      <Dialog>
+      <Dialog onOpenChange={setOpen} open={open()}>
         <DialogTrigger as={Button} class='hidden lg:block'>
           Save
         </DialogTrigger>
