@@ -15,6 +15,8 @@ And this is some text with `inline code`.
 
 EDIT: Changes from admin dashboard!!
 
+EDIT2: Changes from admin dashboard via GitHub API!!!
+
 ---
 
 goto [next slide](#second-sample-slide)
