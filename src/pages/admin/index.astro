@@ -4,14 +4,16 @@ import DashboardLayout from '@/layouts/dashboard.astro'
 ---
 
 <DashboardLayout>
-  <p>This is your admin dashboard. From here you can manage your content.</p>
-  <ul>
-    <li class='flex items-center lg:hidden'>
-      <span>Click on</span>
-      <PanelLeftOpen class='mx-2 inline-block size-4' />
-      <span>to open the sidebar.</span>
-    </li>
-  </ul>
-  <p class='lg:hidden'></p>
-  <p>👈🏻 Choose a collection to continue!</p>
+  <div class='p-4'>
+    <p>This is your admin dashboard. From here you can manage your content.</p>
+    <ul>
+      <li class='flex items-center lg:hidden'>
+        <span>Click on</span>
+        <PanelLeftOpen class='mx-2 inline-block size-4' />
+        <span>to open the sidebar.</span>
+      </li>
+    </ul>
+    <p class='lg:hidden'></p>
+    <p>👈🏻 Choose a collection to continue!</p>
+  </div>
 </DashboardLayout>
