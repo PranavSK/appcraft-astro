@@ -87,6 +87,7 @@ async function getParentCommit() {
           qualifiedName: stagingBranch
         },
         target: {
+          __typename: true,
           on_Commit: {
             history: {
               __args: {
@@ -130,6 +131,9 @@ function createCommitOnBranch(
           fileChanges,
           message
         }
+      },
+      commit: {
+        oid: true
       }
     }
   })
