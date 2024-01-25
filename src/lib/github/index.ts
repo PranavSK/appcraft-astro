@@ -56,7 +56,7 @@ export const saveFile = async ({
   )
 }
 
-export const deleteFiles = async (args: DeleteFileArgs[]) => {
+export const deleteFiles = async (args: ReadonlyArray<DeleteFileArgs>) => {
   const parentCommit = await getParentCommit()
   const filePaths = args.map(({ collection, extension, slug }) => {
     return `src/content/${collection}/${slug}.${extension}`

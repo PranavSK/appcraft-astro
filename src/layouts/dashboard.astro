@@ -1,28 +1,20 @@
 ---
-import { MobileLeftPanel } from '@/components/mobile/left-panel'
 import Breadcrumbs from '@/components/navigation/breadcrumbs.astro'
-import DashboardSide from '@/components/navigation/dashboard-side.astro'
 import { DisplayDevMode } from '@/components/status/display-dev-mode'
 import RootLayout from '@/layouts/root.astro'
 ---
 
-<RootLayout class='grid h-dvh grid-rows-1 lg:grid-cols-6' title='Admin'>
-  <DashboardSide class='hidden border-r lg:block' />
-  <main class='flex flex-col lg:col-span-5'>
-    <DisplayDevMode />
-    <header class='space-y-4 border-b p-4'>
-      <div class='flex items-center gap-2'>
-        <MobileLeftPanel class='size-4 lg:hidden' client:visible>
-          <DashboardSide />
-        </MobileLeftPanel>
-        <Breadcrumbs />
-      </div>
-      <div class='flex items-center justify-between'>
-        <slot name='header'><h2 class='text-xl'>Welcome</h2></slot>
-      </div>
-    </header>
-    <div class='flex-1 overflow-auto bg-muted p-0 text-muted-foreground'>
-      <slot />
+<RootLayout class='flex flex-col' title='Admin'>
+  <DisplayDevMode />
+  <header class='space-y-4 border-b p-4'>
+    <div class='flex items-center gap-2'>
+      <Breadcrumbs />
     </div>
-  </main>
+    <div class='flex items-center justify-between'>
+      <slot name='header'><h2 class='text-xl'>Welcome</h2></slot>
+    </div>
+  </header>
+  <div class='flex-1 overflow-auto p-0'>
+    <slot />
+  </div>
 </RootLayout>

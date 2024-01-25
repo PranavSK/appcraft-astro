@@ -1,7 +1,7 @@
 import type { MarkdownConfig } from '@lezer/markdown'
 
-import { StreamLanguage, foldInside, foldNodeProp } from '@codemirror/language'
-import { yaml } from '@codemirror/legacy-modes/mode/yaml'
+import { jsonLanguage } from '@codemirror/lang-json'
+import { foldInside, foldNodeProp } from '@codemirror/language'
 import { parseMixed } from '@lezer/common'
 import { styleTags, tags } from '@lezer/highlight'
 
@@ -37,9 +37,11 @@ export const markdownFrontmatterParser = {
     })
   ],
   wrap: parseMixed((node) => {
-    const { parser } = StreamLanguage.define(yaml)
     if (node.type.name === FRONTMATTER_NAME) {
-      return { overlay: [{ from: node.from + 4, to: node.to - 4 }], parser }
+      return {
+        overlay: [{ from: node.from + 4, to: node.to - 4 }],
+        parser: jsonLanguage.parser
+      }
     }
 
     return null

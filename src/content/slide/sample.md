@@ -1,6 +1,5 @@
 ---
-description: This is the second sample slide.
-title: Second Sample
+{ 'description': 'This is the second sample slide.', 'title': 'Second Sample' }
 ---
 
 {% slide %}
@@ -13,9 +12,7 @@ This is the first sample slide.
 
 And this is some text with `inline code`.
 
-EDIT: Changes from admin dashboard!!
-
-EDIT2: Changes from admin dashboard via GitHub API!!!
+EDIT: Changes from admin dashboard via GitHub API!!!
 
 ---
 

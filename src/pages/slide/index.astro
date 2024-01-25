@@ -1,0 +1,28 @@
+---
+import { Plus } from '@/components/icons'
+import { CollectionTable } from '@/components/navigation/collection-table'
+import { buttonVariants } from '@/components/ui/button'
+import DashboardLayout from '@/layouts/dashboard.astro'
+import { getCollection } from 'astro:content'
+
+const collectionItems = await getCollection('slide')
+---
+
+<DashboardLayout>
+  <h2 class='text-xl' slot='header'>Full Page Slides</h2>
+  <a class={buttonVariants()} href={`/slide/create-new/edit`} slot='header'>
+    Create New <Plus class='ml-4 size-4' />
+  </a>
+  <CollectionTable
+    client:idle
+    items={collectionItems.map(
+      ({ collection, data: { description, title }, id, slug }) => ({
+        collection,
+        description,
+        extension: id.split('.').pop() ?? '',
+        slug,
+        title
+      })
+    )}
+  />
+</DashboardLayout>

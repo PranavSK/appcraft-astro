@@ -1,8 +1,7 @@
-import type { SaveInput } from '@/lib/trpc/server/router'
 import type { Component } from 'solid-js'
 
-import { MobileBottomPanel } from '@/components/mobile/bottom-panel'
-import { Button } from '@/components/ui/button'
+import { Save } from '@/components/icons'
+import { Button, buttonVariants } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -15,27 +14,44 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
+  Sheet,
+  SheetContent,
   SheetDescription,
   SheetFooter,
   SheetHeader,
-  SheetTitle
+  SheetTitle,
+  SheetTrigger
 } from '@/components/ui/sheet'
 import { toast } from '@/components/ui/toaster'
 import { trpc } from '@/lib/trpc/client'
-import { createEffect, createSignal } from 'solid-js'
+import { createMediaQuery } from '@solid-primitives/media'
+import { Show, createSignal } from 'solid-js'
 
-type SaveButtonProps = SaveInput
+import type { SharedContentId } from '../shared'
+
+import { getCollectionAndSlugFromId, getSharedContent } from '../shared'
+
+interface SaveButtonProps {
+  class?: string
+  sharedContentId: SharedContentId
+}
 export const SaveButton: Component<SaveButtonProps> = (props) => {
-  const [slug, setSlug] = createSignal('')
+  const { collection, slug: slugFromProps } = getCollectionAndSlugFromId(
+    // eslint-disable-next-line solid/reactivity
+    props.sharedContentId
+  )
+  const [slug, setSlug] = createSignal(
+    slugFromProps === 'create-new' ? '' : slugFromProps
+  )
   const [message, setMessage] = createSignal('')
   const [open, setOpen] = createSignal(false)
-
-  createEffect(() => setSlug(props.slug === 'create-new' ? '' : props.slug))
 
   function handleSave() {
     toast.promise(
       trpc.cms.save.mutate({
-        ...props,
+        body: getSharedContent(props.sharedContentId),
+        collection,
+        extension: 'md',
         message: message() === '' ? undefined : message(),
         slug: slug()
       }),
@@ -108,31 +124,48 @@ export const SaveButton: Component<SaveButtonProps> = (props) => {
     return <Button onClick={handleSave}>Confirm</Button>
   }
 
+  const isMediaLg = createMediaQuery('(min-width: 1024px)', true)
+
   return (
-    <>
-      <MobileBottomPanel
-        class='lg:hidden'
-        onOpenChange={setOpen}
-        open={open()}
-        triggerAs={Button}
-        triggerContent='Save'
-      >
-        <SheetHeader>
-          <SheetTitle>
-            <Title />
-          </SheetTitle>
-          <SheetDescription>
-            <Description />
-          </SheetDescription>
-          <Form />
-          <SheetFooter>
-            <Footer />
-          </SheetFooter>
-        </SheetHeader>
-      </MobileBottomPanel>
+    <Show
+      fallback={
+        <Sheet onOpenChange={setOpen} open={open()}>
+          <SheetTrigger
+            class={buttonVariants({
+              class: props.class,
+              size: 'sm',
+              variant: 'ghost'
+            })}
+          >
+            <Save class='size-4' />
+          </SheetTrigger>
+          <SheetContent position='bottom' size='xl'>
+            <SheetHeader>
+              <SheetTitle>
+                <Title />
+              </SheetTitle>
+              <SheetDescription>
+                <Description />
+              </SheetDescription>
+              <Form />
+              <SheetFooter>
+                <Footer />
+              </SheetFooter>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+      }
+      when={isMediaLg()}
+    >
       <Dialog onOpenChange={setOpen} open={open()}>
-        <DialogTrigger as={Button} class='hidden lg:block'>
-          Save
+        <DialogTrigger
+          class={buttonVariants({
+            class: props.class,
+            size: 'sm',
+            variant: 'ghost'
+          })}
+        >
+          <Save class='size-4' />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -149,6 +182,6 @@ export const SaveButton: Component<SaveButtonProps> = (props) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </>
+    </Show>
   )
 }

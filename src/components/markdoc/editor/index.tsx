@@ -11,17 +11,22 @@ import { materialDark } from 'cm6-theme-material-dark'
 import { basicSetup } from 'codemirror'
 import { createCodeMirror, createEditorControlledValue } from 'solid-codemirror'
 
-import { useSandboxContext } from '../sandbox/context'
+import type { SharedContentId } from '../shared'
 
-interface MarkdocEditorProps extends ComponentProps<'div'> {}
+import { setSharedContent, useSharedMarkdocData } from '../shared'
+
+interface MarkdocEditorProps extends ComponentProps<'div'> {
+  sharedContentId: SharedContentId
+}
 export const MarkdocEditor: Component<MarkdocEditorProps> = (props) => {
-  const { content, errors, setContent } = useSandboxContext()
+  // eslint-disable-next-line solid/reactivity
+  const { content, errors } = useSharedMarkdocData(props.sharedContentId)
   const {
     createExtension,
     editorView,
     ref: editorRef
   } = createCodeMirror({
-    onValueChange: setContent
+    onValueChange: (value) => setSharedContent(props.sharedContentId, value)
   })
   createEditorControlledValue(editorView, content)
 

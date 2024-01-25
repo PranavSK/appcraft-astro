@@ -1,0 +1,37 @@
+---
+import type { GetStaticPaths } from 'astro'
+
+import { MarkdocPreview } from '@/components/markdoc/preview'
+import RootLayout from '@/layouts/root.astro'
+import { getCollection } from 'astro:content'
+
+export const getStaticPaths = (async () => {
+  const collection = await getCollection('slide')
+  return [
+    ...collection.map((slide) => ({
+      params: {
+        slug: slide.slug
+      },
+      props: {
+        slide
+      }
+    })),
+    {
+      params: {
+        slug: 'create-new'
+      },
+      props: {
+        slide: null
+      }
+    }
+  ]
+}) satisfies GetStaticPaths
+
+const { slug } = Astro.params
+const { slide } = Astro.props
+const title = slide ? `Edit ${slide.data.title}` : 'Create New Slide'
+---
+
+<RootLayout class='relative' title={title}>
+  <MarkdocPreview client:only='solid-js' sharedContentId={`slide/${slug}`} />
+</RootLayout>

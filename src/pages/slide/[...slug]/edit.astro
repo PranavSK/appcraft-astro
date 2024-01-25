@@ -1,0 +1,50 @@
+---
+import type { GetStaticPaths } from 'astro'
+
+import { MarkdocSandbox } from '@/components/markdoc/sandbox'
+import Breadcrumbs from '@/components/navigation/breadcrumbs.astro'
+import RootLayout from '@/layouts/root.astro'
+import { getCollection } from 'astro:content'
+
+export const getStaticPaths = (async () => {
+  const collection = await getCollection('slide')
+  return [
+    ...collection.map((slide) => ({
+      params: {
+        slug: slide.slug
+      },
+      props: {
+        slide
+      }
+    })),
+    {
+      params: {
+        slug: 'create-new'
+      },
+      props: {
+        slide: null
+      }
+    }
+  ]
+}) satisfies GetStaticPaths
+const { slug } = Astro.params
+const { slide } = Astro.props
+const frontmatter = slide?.data
+  ? `---\n${JSON.stringify(slide.data, null, 2)}\n---\n`
+  : ''
+const body = slide?.body ?? ''
+const initialContent = `${frontmatter}${body}`
+const title = slide ? `Edit ${slide.data.title}` : 'Create New Slide'
+---
+
+<RootLayout class='h-dvh' title={title}>
+  <MarkdocSandbox
+    class='relative size-full'
+    client:only='solid'
+    initialContent={initialContent}
+    previewUrl={`/slide/${slug}/preview`}
+    sharedContentId={`slide/${slug}`}
+  >
+    <Breadcrumbs />
+  </MarkdocSandbox>
+</RootLayout>
