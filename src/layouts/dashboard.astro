@@ -9,6 +9,12 @@ import RootLayout from '@/layouts/root.astro'
   <header class='space-y-4 border-b p-4'>
     <div class='flex items-center gap-2'>
       <Breadcrumbs />
+      <a href='https://app.netlify.com/sites/appcraft/deploys'>
+        <img
+          alt='Netlify Status'
+          src='https://api.netlify.com/api/v1/badges/1c47041a-404a-4a67-990e-e516909afbb4/deploy-status'
+        />
+      </a>
     </div>
     <div class='flex items-center justify-between'>
       <slot name='header'><h2 class='text-xl'>Welcome</h2></slot>

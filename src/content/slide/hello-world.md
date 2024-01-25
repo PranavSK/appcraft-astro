@@ -1,8 +1,5 @@
 ---
-{
-  "title": "Hello World!"
-  "description": "What is the hello world program?"
-}
+{ 'title': 'Hello World!', 'description': 'What is the hello world program?' }
 ---
 
 {% slide %}
@@ -23,8 +20,9 @@
 
 # Hello HTML
 
-`Hello, World` can also be written on a web page using HTML. 
- Here's some code that displays "Hello, World!" on a web page:[^3]
+`Hello, World` can also be written on a web page using HTML.
+Here's some code that displays "Hello, World!" on a web page:[^3]
+
 ```html
 <html>
   <head>
@@ -33,9 +31,9 @@
   <body>
     <h1>Hello World!</h1>
   </body>
-</html> 
+</html>
 ```
+
 [^3]: https://www.quora.com/What-is-the-code-to-display-hello-world-on-the-web-page
- 
 
 {% /slide %}
