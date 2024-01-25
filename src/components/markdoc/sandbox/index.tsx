@@ -1,72 +1,105 @@
+import type { ParentComponent } from 'solid-js'
+
+import { DisplayDevMode } from '@/components/status/display-dev-mode'
 import {
-  setSharedContent,
-  useSharedContentState
-} from '@/components/cms/shared'
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup
+} from '@/components/ui/resizable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Toaster } from '@/components/ui/toaster'
-import { markdocConfigs } from '@/content/config'
 import { cx } from '@/lib/utils'
-import Markdoc from '@markdoc/markdoc'
-import {
-  type Component,
-  type ComponentProps,
-  createMemo,
-  onMount,
-  splitProps
-} from 'solid-js'
+import { createMediaQuery } from '@solid-primitives/media'
+import { Show, createMemo } from 'solid-js'
+import { isDev } from 'solid-js/web'
+
+import type { SharedContentId } from '../shared'
 
 import { MarkdocEditor } from '../editor'
-import { MarkdocPreviewIframe } from '../preview'
-import { SandboxContextProvider } from './context'
+import { initializeSharedContentPool } from '../shared'
+import { SaveButton } from './save-button'
 
-interface SandboxProps extends ComponentProps<typeof Tabs> {
-  collection: keyof typeof markdocConfigs
-  initialContent?: string
-  slug: string
+interface SandboxProps {
+  class?: string
+  initialContent: string
+  previewUrl: string
+  sharedContentId: SharedContentId
 }
-export const Sandbox: Component<SandboxProps> = (props) => {
-  const [editorProps, cxProps, rest] = splitProps(
-    props,
-    ['initialContent'],
-    ['class']
-  )
-  const content = useSharedContentState()
-  const ast = createMemo(() => Markdoc.parse(content()))
-  const config = () => markdocConfigs[props.collection]
-  const errors = createMemo(() => Markdoc.validate(ast(), config()))
-  const renderNodes = createMemo(() => Markdoc.transform(ast(), config()))
+export const MarkdocSandbox: ParentComponent<SandboxProps> = (props) => {
+  // eslint-disable-next-line solid/reactivity
+  initializeSharedContentPool(props.sharedContentId, props.initialContent)
 
-  onMount(() => {
-    if (editorProps.initialContent) setSharedContent(editorProps.initialContent)
-  })
+  const isMediaLg = createMediaQuery('(min-width: 1024px)', true)
+
+  const editorPanel = createMemo(() => (
+    <>
+      <DisplayDevMode />
+      <div class='relative flex h-10 select-none items-center gap-1 bg-background p-1'>
+        {props.children}
+        <SaveButton class='ml-auto' sharedContentId={props.sharedContentId} />
+      </div>
+      <MarkdocEditor
+        class='overflow-auto'
+        classList={{
+          'h-[calc(100%-2.5rem)]': !isDev,
+          'h-[calc(100%-4.25rem)]': isDev
+        }}
+        sharedContentId={props.sharedContentId}
+      />
+    </>
+  ))
+  const previewPanel = createMemo(() => (
+    <iframe class='size-full border-none' src={props.previewUrl} />
+  ))
 
   return (
-    <SandboxContextProvider
-      value={{
-        ast,
-        content,
-        errors,
-        renderNodes,
-        setContent: setSharedContent
-      }}
-    >
-      <Tabs
-        class={cx('flex flex-col', cxProps.class)}
-        defaultValue='editor'
-        {...rest}
+    <>
+      <Show
+        fallback={
+          <Tabs class={cx('size-full', props.class)} defaultValue='editor'>
+            <TabsContent
+              class='m-0 h-[calc(100%-2.5rem)] w-full overflow-hidden'
+              value='editor'
+            >
+              {editorPanel()}
+            </TabsContent>
+            <TabsContent
+              class='m-0 h-[calc(100%-2.5rem)] w-full overflow-hidden'
+              value='preview'
+            >
+              {previewPanel()}
+            </TabsContent>
+            <TabsList class='grid w-full grid-cols-2 rounded-none p-2 pb-0'>
+              <TabsTrigger class='rounded-b-none' value='editor'>
+                Editor
+              </TabsTrigger>
+              <TabsTrigger class='rounded-b-none' value='preview'>
+                Preview
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        }
+        when={isMediaLg()}
       >
-        <TabsList class='grid w-full grid-cols-2'>
-          <TabsTrigger value='editor'>Editor</TabsTrigger>
-          <TabsTrigger value='preview'>Preview</TabsTrigger>
-        </TabsList>
-        <TabsContent class='flex-1' value='editor'>
-          <MarkdocEditor class='h-full' />
-        </TabsContent>
-        <TabsContent class='flex-1' value='preview'>
-          <MarkdocPreviewIframe collection={props.collection} />
-        </TabsContent>
-      </Tabs>
+        <ResizablePanelGroup
+          class={cx('size-full', props.class)}
+          direction='horizontal'
+        >
+          <ResizablePanel
+            class='relative size-full bg-red-50'
+            collapsible
+            defaultSize={40}
+            minSize={20}
+          >
+            {editorPanel()}
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel defaultSize={60} minSize={40}>
+            {previewPanel()}
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </Show>
       <Toaster />
-    </SandboxContextProvider>
+    </>
   )
 }

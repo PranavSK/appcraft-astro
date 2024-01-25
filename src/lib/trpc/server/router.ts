@@ -26,13 +26,15 @@ export const appRouter = t.router({
   cms: t.router({
     delete: adminProcedure
       .input(
-        z.array(
-          z.object({
-            collection: z.string().min(1),
-            extension: z.string().min(1),
-            slug: z.string().min(1)
-          })
-        )
+        z
+          .array(
+            z.object({
+              collection: z.string().min(1),
+              extension: z.string().min(1),
+              slug: z.string().min(1)
+            })
+          )
+          .readonly()
       )
       .mutation(async ({ input }) => {
         if (import.meta.env.DEV) {

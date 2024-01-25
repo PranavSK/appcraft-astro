@@ -1,4 +1,5 @@
 import type { Config } from '@markdoc/markdoc'
+import type { ContentCollectionKey } from 'astro:content'
 
 import Markdoc from '@markdoc/markdoc'
 import { defineCollection, z } from 'astro:content'
@@ -13,7 +14,17 @@ const slide = defineCollection({
   type: 'content'
 })
 
+const author = defineCollection({
+  schema: z.object({
+    email: z.string().email(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional()
+  }),
+  type: 'data'
+})
+
 export const collections = {
+  author,
   slide
 }
 
@@ -31,4 +42,4 @@ export const markdocConfigs = {
       }
     }
   }
-} satisfies Record<keyof typeof collections, Config>
+} satisfies Record<ContentCollectionKey, Config>

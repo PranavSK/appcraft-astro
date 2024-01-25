@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro'
+
+import { MarkdocRenderer } from '@/components/markdoc/renderer'
+import { markdocConfigs } from '@/content/config'
+import RootLayout from '@/layouts/root.astro'
+import Markdoc from '@markdoc/markdoc'
+import { getCollection } from 'astro:content'
+
+export const getStaticPaths = (async () => {
+  const collection = await getCollection('slide')
+  return collection.map((slide) => ({
+    params: {
+      slug: slide.slug
+    },
+    props: {
+      slide
+    }
+  }))
+}) satisfies GetStaticPaths
+
+const { slide } = Astro.props
+const ast = Markdoc.parse(slide.body)
+const nodes = Markdoc.transform(ast, markdocConfigs[slide.collection])
+---
+
+<RootLayout class='relative' title={`${slide.data.title}`}>
+  <MarkdocRenderer client:idle nodes={nodes} />
+</RootLayout>

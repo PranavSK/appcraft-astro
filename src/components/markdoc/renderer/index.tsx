@@ -57,8 +57,6 @@ export function render(nodes: RenderableTreeNodes) {
   return recursiveRender(nodes)
 }
 
-export const MarkdocRenderer = (props: { nodes: RenderableTreeNodes }) =>
-  // We don't need any reactivity here - the node tree is recreated
-  // on every pars->transform->render cycle
-  // eslint-disable-next-line solid/reactivity
-  render(props.nodes)
+export const MarkdocRenderer = (props: { nodes: RenderableTreeNodes }) => (
+  <>{render(props.nodes)}</>
+)
