@@ -5,7 +5,7 @@ import Markdoc from '@markdoc/markdoc'
 import { createComponent } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 
-import { components } from '../components'
+import { components } from '../shared'
 
 const Tag = Markdoc.Tag
 type TagType = InstanceType<typeof Tag>

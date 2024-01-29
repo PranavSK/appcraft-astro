@@ -1,5 +1,7 @@
 import type { ContentCollectionKey } from 'astro:content'
+import type { ValidComponent } from 'solid-js'
 
+import { Document, Page } from '@/components/full-page'
 import { markdocConfigs } from '@/content/config'
 import { createStorePool } from '@/lib/store/pool'
 import Markdoc from '@markdoc/markdoc'
@@ -71,4 +73,9 @@ export const useSharedMarkdocData = (sharedContentId: SharedContentId) => {
     errors,
     renderNodes
   }
+}
+
+export const components: Record<string, ValidComponent> = {
+  'full-page-document': Document,
+  'full-page-page': Page
 }
