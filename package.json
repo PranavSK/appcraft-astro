@@ -95,5 +95,10 @@
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@felte/reporter-solid@1.2.10": "patches/@felte__reporter-solid@1.2.10.patch"
+    }
   }
 }

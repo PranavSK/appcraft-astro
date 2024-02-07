@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@felte/reporter-solid@1.2.10':
+    hash: f6crbvf2hkyzrtf7zaj65pvhgu
+    path: patches/@felte__reporter-solid@1.2.10.patch
+
 dependencies:
   '@astrojs/check':
     specifier: ^0.4.1
@@ -37,7 +42,7 @@ dependencies:
     version: 6.23.1
   '@felte/reporter-solid':
     specifier: ^1.2.10
-    version: 1.2.10(solid-js@1.8.12)
+    version: 1.2.10(patch_hash=f6crbvf2hkyzrtf7zaj65pvhgu)(solid-js@1.8.12)
   '@felte/solid':
     specifier: ^1.2.13
     version: 1.2.13(solid-js@1.8.12)
@@ -1401,7 +1406,7 @@ packages:
       '@felte/common': 1.1.8
     dev: false
 
-  /@felte/reporter-solid@1.2.10(solid-js@1.8.12):
+  /@felte/reporter-solid@1.2.10(patch_hash=f6crbvf2hkyzrtf7zaj65pvhgu)(solid-js@1.8.12):
     resolution: {integrity: sha512-PA53U8faMpTfeijDH3hq6wdIGJfbHwG4OkpcNghvVsrWWvfTErAynFBLdVrqO1f4ZH1lgHK8rZfNYitChd89og==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     peerDependencies:
@@ -1410,6 +1415,7 @@ packages:
       '@felte/common': 1.1.8
       solid-js: 1.8.12
     dev: false
+    patched: true
 
   /@felte/solid@1.2.13(solid-js@1.8.12):
     resolution: {integrity: sha512-ngJgNRe0Frxl6iypCFbpKxs+xGw3MXucttqbCDAx7rSFe4BL9NqLDr65CZhd28KY4NRjbnYgAqT0mf0HxHz9Vw==}
