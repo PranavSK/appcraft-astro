@@ -23,39 +23,26 @@ import {
   SheetTrigger
 } from '@/components/ui/sheet'
 import { toast } from '@/components/ui/toaster'
-import { trpc } from '@/lib/trpc/client'
 import { createMediaQuery } from '@solid-primitives/media'
-import { Show, createSignal } from 'solid-js'
-
-import type { SharedContentId } from '../shared'
-
-import { getCollectionAndSlugFromId, getSharedContent } from '../shared'
+import { Show, createEffect, createSignal } from 'solid-js'
 
 interface SaveButtonProps {
   class?: string
-  sharedContentId: SharedContentId
+  initialSlug: string
+  onSave?: (slug: string, message: string) => Promise<void>
 }
 export const SaveButton: Component<SaveButtonProps> = (props) => {
-  const { collection, slug: slugFromProps } = getCollectionAndSlugFromId(
-    // eslint-disable-next-line solid/reactivity
-    props.sharedContentId
-  )
-  const [slug, setSlug] = createSignal(
-    slugFromProps === 'create-new' ? '' : slugFromProps
-  )
+  const [slug, setSlug] = createSignal('')
   const [message, setMessage] = createSignal('')
   const [open, setOpen] = createSignal(false)
 
+  createEffect(() => {
+    setSlug(props.initialSlug)
+  })
+
   function handleSave() {
-    toast.promise(
-      trpc.cms.save.mutate({
-        body: getSharedContent(props.sharedContentId),
-        collection,
-        extension: 'md',
-        message: message() === '' ? undefined : message(),
-        slug: slug()
-      }),
-      {
+    if (props.onSave) {
+      toast.promise(props.onSave(slug(), message()), {
         error: (error) => {
           if (error instanceof Error) {
             return {
@@ -74,8 +61,13 @@ export const SaveButton: Component<SaveButtonProps> = (props) => {
         success: () => ({
           title: 'Saved!'
         })
-      }
-    )
+      })
+    } else {
+      toast.error({
+        description: 'No onSave function provided.',
+        title: 'Error'
+      })
+    }
     setOpen(false)
   }
 

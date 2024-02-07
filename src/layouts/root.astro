@@ -5,12 +5,18 @@ import '@fontsource-variable/urbanist/wght-italic.css'
 interface Props {
   class?: string
   description?: string
+  rootClass?: string
   title?: string
 }
-const { class: className, description, title = 'Appcraft Astro' } = Astro.props
+const {
+  class: className,
+  description,
+  rootClass,
+  title = 'Appcraft Astro'
+} = Astro.props
 ---
 
-<html lang='en'>
+<html class={rootClass} lang='en'>
   <head>
     <meta charset='utf-8' />
     <link href='/favicon.svg' rel='icon' type='image/svg+xml' />

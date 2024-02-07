@@ -5,6 +5,7 @@ import twTypography from '@tailwindcss/typography'
 import { fontFamily } from 'tailwindcss/defaultTheme'
 import twAnimate from 'tailwindcss-animate'
 
+import { createFluidValuePx } from './tools/create-fluid-value'
 import { codemirrorPlugin } from './tools/tailwind-plugins/codemirror-plugin'
 import { shadcnPlugin } from './tools/tailwind-plugins/shadcn-plugin'
 
@@ -24,6 +25,9 @@ export default {
         mono: ['Share Tech Mono', ...fontFamily.mono],
         sans: ['Urbanist', ...fontFamily.sans]
       },
+      fontSize: {
+        applet: createFluidValuePx(12, 24, 320, 1280)
+      },
       gridTemplateAreas: {
         'collection-list': [
           'title-filename title-title',
@@ -35,6 +39,9 @@ export default {
           'title-filename title-title title-description title-description',
           'filename title description description'
         ]
+      },
+      gridTemplateRows: {
+        applet: 'repeat(6, minmax(0, 6.5rem));'
       }
     }
   }

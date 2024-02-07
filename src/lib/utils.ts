@@ -6,3 +6,8 @@ export const { compose, cva, cx } = defineConfig({
     onComplete: (className) => twMerge(className)
   }
 })
+
+export function copyToClipboard(text: string) {
+  if (!navigator.clipboard) return
+  navigator.clipboard.writeText(text)
+}

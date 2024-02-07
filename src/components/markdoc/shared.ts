@@ -4,6 +4,7 @@ import type { ValidComponent } from 'solid-js'
 import { Document, Page } from '@/components/full-page'
 import { markdocConfigs } from '@/content/config'
 import { createStorePool } from '@/lib/store/pool'
+import { trpc } from '@/lib/trpc/client'
 import Markdoc from '@markdoc/markdoc'
 import { persistentAtom } from '@nanostores/persistent'
 import { action } from 'nanostores'
@@ -57,6 +58,20 @@ export type SharedContentId = `${ContentCollectionKey}/${string}`
 export const getCollectionAndSlugFromId = (id: SharedContentId) => {
   const [collection, slug] = id.split('/')
   return { collection: collection as ContentCollectionKey, slug }
+}
+
+export const getSaveHandler = (id: SharedContentId) => {
+  const store = sharedContentPool(id)
+  const { collection } = getCollectionAndSlugFromId(id)
+  return action(store, 'save-content', (s, slug: string, message: string) =>
+    trpc.cms.save.mutate({
+      body: s.get() ?? '',
+      collection,
+      extension: 'md',
+      message: message === '' ? undefined : message,
+      slug
+    })
+  )
 }
 
 export const useSharedMarkdocData = (sharedContentId: SharedContentId) => {

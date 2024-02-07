@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js/types/server/rendering.js'
 
 import { ChevronLeft, ChevronRight, MoreHorizontal } from '@/components/icons'
-import { cx } from 'cva'
+import { cx } from '@/lib/utils'
 import { type ComponentProps, splitProps } from 'solid-js'
 
 import { type ButtonProps, buttonVariants } from './button'

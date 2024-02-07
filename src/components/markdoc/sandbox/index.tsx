@@ -1,5 +1,6 @@
 import type { ParentComponent } from 'solid-js'
 
+import { SaveButton } from '@/components/cms/save-button'
 import { DisplayDevMode } from '@/components/status/display-dev-mode'
 import {
   ResizableHandle,
@@ -16,8 +17,11 @@ import { isDev } from 'solid-js/web'
 import type { SharedContentId } from '../shared'
 
 import { MarkdocEditor } from '../editor'
-import { initializeSharedContentPool } from '../shared'
-import { SaveButton } from './save-button'
+import {
+  getCollectionAndSlugFromId,
+  getSaveHandler,
+  initializeSharedContentPool
+} from '../shared'
 
 interface SandboxProps {
   class?: string
@@ -31,23 +35,30 @@ export const MarkdocSandbox: ParentComponent<SandboxProps> = (props) => {
 
   const isMediaLg = createMediaQuery('(min-width: 1024px)', true)
 
-  const editorPanel = createMemo(() => (
-    <>
-      <DisplayDevMode />
-      <div class='relative flex h-10 select-none items-center gap-1 bg-background p-1'>
-        {props.children}
-        <SaveButton class='ml-auto' sharedContentId={props.sharedContentId} />
-      </div>
-      <MarkdocEditor
-        class='overflow-auto'
-        classList={{
-          'h-[calc(100%-2.5rem)]': !isDev,
-          'h-[calc(100%-4.25rem)]': isDev
-        }}
-        sharedContentId={props.sharedContentId}
-      />
-    </>
-  ))
+  const editorPanel = createMemo(() => {
+    const initialSlug = getCollectionAndSlugFromId(props.sharedContentId).slug
+    return (
+      <>
+        <DisplayDevMode />
+        <div class='relative flex h-10 select-none items-center gap-1 bg-background p-1'>
+          {props.children}
+          <SaveButton
+            class='ml-auto'
+            initialSlug={initialSlug}
+            onSave={getSaveHandler(props.sharedContentId)}
+          />
+        </div>
+        <MarkdocEditor
+          class='overflow-auto'
+          classList={{
+            'h-[calc(100%-2.5rem)]': !isDev,
+            'h-[calc(100%-4.25rem)]': isDev
+          }}
+          sharedContentId={props.sharedContentId}
+        />
+      </>
+    )
+  })
   const previewPanel = createMemo(() => (
     <iframe class='size-full border-none' src={props.previewUrl} />
   ))
@@ -86,7 +97,7 @@ export const MarkdocSandbox: ParentComponent<SandboxProps> = (props) => {
           direction='horizontal'
         >
           <ResizablePanel
-            class='relative size-full bg-red-50'
+            class='relative size-full'
             collapsible
             defaultSize={40}
             minSize={20}

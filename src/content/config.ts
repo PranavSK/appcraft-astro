@@ -1,16 +1,16 @@
 import type { Config } from '@markdoc/markdoc'
 import type { ContentCollectionKey } from 'astro:content'
 
+import { appletSchema } from '@/components/applet/schema'
 import Markdoc from '@markdoc/markdoc'
 import { defineCollection, z } from 'astro:content'
 
-const baseSchema = z.object({
+const baseContentSchema = z.object({
   description: z.string().optional(),
   title: z.string()
 })
-
 const slide = defineCollection({
-  schema: baseSchema,
+  schema: baseContentSchema,
   type: 'content'
 })
 
@@ -23,7 +23,13 @@ const author = defineCollection({
   type: 'data'
 })
 
+const applet = defineCollection({
+  schema: appletSchema,
+  type: 'data'
+})
+
 export const collections = {
+  applet,
   author,
   slide
 }

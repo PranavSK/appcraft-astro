@@ -68,7 +68,8 @@ export const shadcnPlugin = plugin(
 
     addBase({
       '*': {
-        'border-color': 'hsl(var(--border))'
+        'border-color': 'hsl(var(--border))',
+        'box-sizing': 'border-box'
       },
       body: {
         'background-color': 'hsl(var(--background))',
@@ -90,6 +91,8 @@ export const shadcnPlugin = plugin(
         animation: {
           'accordion-down': 'accordion-down 0.2s ease-out',
           'accordion-up': 'accordion-up 0.2s ease-out',
+          'collapsible-down': 'collapsible-down 0.2s ease-out',
+          'collapsible-up': 'collapsible-up 0.2s ease-out',
           'content-hide': 'content-hide 0.2s ease-out',
           'content-show': 'content-show 0.2s ease-out'
         },
@@ -156,6 +159,14 @@ export const shadcnPlugin = plugin(
           },
           'accordion-up': {
             from: { height: 'var(--kb-accordion-content-height)' },
+            to: { height: '0' }
+          },
+          'collapsible-down': {
+            from: { height: '0' },
+            to: { height: 'var(--kb-collapsible-content-height)' }
+          },
+          'collapsible-up': {
+            from: { height: 'var(--kb-collapsible-content-height)' },
             to: { height: '0' }
           },
           'content-hide': {

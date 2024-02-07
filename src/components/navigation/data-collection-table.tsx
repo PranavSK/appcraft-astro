@@ -5,17 +5,9 @@ import type {
 } from '@tanstack/solid-table'
 import type { Component } from 'solid-js'
 
-import { FileEdit, MoreHorizontal, Trash } from '@/components/icons'
-import { Button } from '@/components/ui/button'
+import { FileEdit, Trash, View } from '@/components/icons'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown'
 import { Separator } from '@/components/ui/separator'
 import {
   Table,
@@ -27,8 +19,6 @@ import {
 } from '@/components/ui/table'
 import { Toaster, toast } from '@/components/ui/toaster'
 import { trpc } from '@/lib/trpc/client'
-import { As } from '@kobalte/core'
-import { createMediaQuery } from '@solid-primitives/media'
 import {
   createColumnHelper,
   createSolidTable,
@@ -38,20 +28,18 @@ import {
   getPaginationRowModel,
   getSortedRowModel
 } from '@tanstack/solid-table'
-import { For, Show, createEffect, createSignal } from 'solid-js'
+import { For, createSignal } from 'solid-js'
 
-type CollectionTableItem = {
+type DataCollectionTableItem = {
   collection: string
-  description?: string
   extension: string
   slug: string
-  title: string
 }
-interface CollectionTableProps {
-  items: CollectionTableItem[]
+interface DataCollectionTableProps {
+  items: DataCollectionTableItem[]
 }
 
-function handleDelete(items: ReadonlyArray<CollectionTableItem>) {
+function handleDelete(items: ReadonlyArray<DataCollectionTableItem>) {
   toast.promise(
     trpc.cms.delete.mutate(
       items.map(({ collection, extension, slug }) => ({
@@ -79,7 +67,7 @@ function handleDelete(items: ReadonlyArray<CollectionTableItem>) {
   )
 }
 
-const columnHelper = createColumnHelper<CollectionTableItem>()
+const columnHelper = createColumnHelper<DataCollectionTableItem>()
 const columns = [
   columnHelper.display({
     cell: (props) => (
@@ -105,60 +93,33 @@ const columns = [
     cell: (info) => info.getValue(),
     header: 'Slug'
   }),
-  columnHelper.accessor('title', {
-    cell: (info) => info.getValue(),
-    header: 'Title'
-  }),
-  columnHelper.accessor('description', {
-    cell: (info) => info.getValue(),
-    header: 'Description'
-  }),
+
   columnHelper.display({
     cell: (props) => {
       const collection = () => props.row.original.collection
       const slug = () => props.row.original.slug
-      const isMediaLg = createMediaQuery('(min-width: 1024px)')
-      const description = () => {
-        const cell = props.row
-          .getAllCells()
-          .find((cell) => cell.column.id === 'description')
-        if (cell)
-          return flexRender(cell.column.columnDef.cell, cell.getContext())
-      }
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <As class='size-8 p-0' component={Button} variant='ghost'>
-              <span class='sr-only'>Open menu</span>
-              <MoreHorizontal class='size-4' />
-            </As>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <Show when={!isMediaLg()}>
-              <DropdownMenuLabel>Description</DropdownMenuLabel>
-              <span class='px-2 py-1.5 text-sm'>{description()}</span>
-              <DropdownMenuSeparator />
-            </Show>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <As component='a' href={`/${collection()}/${slug()}`}>
-                View page
-              </As>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <As component='a' href={`/${collection()}/${slug()}/edit`}>
-                <FileEdit class='mr-2 size-4' />
-                Edit page
-              </As>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => handleDelete([props.row.original])}
-            >
-              <Trash class='mr-2 size-4' /> Delete page
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div class='inline-flex items-center gap-2'>
+          <a
+            class={buttonVariants({ size: 'icon', variant: 'link' })}
+            href={`/${collection()}/${slug()}`}
+          >
+            <View class='size-4' />
+          </a>
+          <a
+            class={buttonVariants({ size: 'icon', variant: 'link' })}
+            href={`/${collection()}/${slug()}/edit`}
+          >
+            <FileEdit class='size-4' />
+          </a>
+          <Button
+            onClick={() => handleDelete([props.row.original])}
+            size='icon'
+            variant='link'
+          >
+            <Trash class='size-4' />
+          </Button>
+        </div>
       )
     },
     enableHiding: false,
@@ -166,7 +127,9 @@ const columns = [
   })
 ]
 
-export const CollectionTable: Component<CollectionTableProps> = (props) => {
+export const DataCollectionTable: Component<DataCollectionTableProps> = (
+  props
+) => {
   const [sorting, setSorting] = createSignal<SortingState>([])
   const [columnFilters, setColumnFilters] = createSignal<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = createSignal<VisibilityState>(
@@ -174,7 +137,7 @@ export const CollectionTable: Component<CollectionTableProps> = (props) => {
   )
   const [rowSelection, setRowSelection] = createSignal({})
 
-  const table = createSolidTable<CollectionTableItem>({
+  const table = createSolidTable<DataCollectionTableItem>({
     columns,
     get data() {
       return props.items
@@ -201,12 +164,6 @@ export const CollectionTable: Component<CollectionTableProps> = (props) => {
         return sorting()
       }
     }
-  })
-
-  const isMediaLg = createMediaQuery('(min-width: 1024px)')
-
-  createEffect(() => {
-    table.getColumn('description')?.toggleVisibility(isMediaLg())
   })
 
   return (
