@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro'
+
+import { AppletRenderer } from '@/components/applet/renderer'
+import RootLayout from '@/layouts/root.astro'
+import { getCollection } from 'astro:content'
+
+export const getStaticPaths = (async () => {
+  const collection = await getCollection('applet')
+  return collection.map((applet) => ({
+    params: {
+      slug: applet.id
+    },
+    props: {
+      applet
+    }
+  }))
+}) satisfies GetStaticPaths
+
+const { applet } = Astro.props
+---
+
+<RootLayout
+  class='relative h-dvh'
+  rootClass='text-applet'
+  title={`${applet.id}`}
+>
+  <AppletRenderer client:load id={applet.id} root={applet.data} />
+</RootLayout>

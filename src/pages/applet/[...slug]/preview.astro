@@ -1,0 +1,36 @@
+---
+import type { GetStaticPaths } from 'astro'
+
+import { AppletPreview } from '@/components/applet/preview'
+import RootLayout from '@/layouts/root.astro'
+import { getCollection } from 'astro:content'
+
+export const getStaticPaths = (async () => {
+  const collection = await getCollection('applet')
+  return [
+    ...collection.map((applet) => ({
+      params: {
+        slug: applet.id
+      },
+      props: {
+        applet
+      }
+    })),
+    {
+      params: {
+        slug: 'create-new'
+      },
+      props: {
+        applet: null
+      }
+    }
+  ]
+}) satisfies GetStaticPaths
+
+const { applet } = Astro.props
+const title = applet ? `Edit ${applet.id}` : 'Create New Slide'
+---
+
+<RootLayout class='relative h-dvh' rootClass='text-applet' title={title}>
+  <AppletPreview client:only='solid-js' id={applet?.id ?? 'create-new'} />
+</RootLayout>

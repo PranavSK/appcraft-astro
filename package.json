@@ -26,9 +26,13 @@
     "@codemirror/lint": "^6.4.2",
     "@codemirror/state": "^6.4.0",
     "@codemirror/view": "^6.23.0",
+    "@felte/reporter-solid": "^1.2.10",
+    "@felte/solid": "^1.2.13",
+    "@felte/validator-zod": "^1.0.17",
     "@fontsource-variable/urbanist": "^5.0.19",
     "@fontsource/share-tech-mono": "^5.0.8",
     "@kobalte/core": "^0.12.1",
+    "@leeoniya/ufuzzy": "^1.0.14",
     "@lezer/common": "^1.2.1",
     "@lezer/highlight": "^1.2.0",
     "@lezer/markdown": "^1.2.0",
@@ -44,9 +48,14 @@
     "codemirror": "^6.0.1",
     "cva": "1.0.0-beta.1",
     "embla-carousel-solid": "8.0.0-rc19",
+    "katex": "^0.16.9",
+    "motion": "^10.17.0",
+    "nanoid": "^5.0.4",
     "nanostores": "^0.9.5",
+    "polymorph-js": "^1.0.2",
     "solid-codemirror": "^2.3.1",
     "solid-js": "^1.8.11",
+    "solid-motionone": "^1.0.0",
     "solid-resizable-panels-port": "^0.0.0",
     "tailwind-merge": "^2.2.0",
     "tailwindcss": "^3.4.0",
@@ -61,6 +70,7 @@
     "@genql/cli": "^6.3.0",
     "@savvywombat/tailwindcss-grid-areas": "^4.0.0",
     "@tailwindcss/typography": "^0.5.10",
+    "@types/katex": "^0.16.7",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "commit-and-tag-version": "^12.2.0",
@@ -84,6 +94,11 @@
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@felte/reporter-solid@1.2.10": "patches/@felte__reporter-solid@1.2.10.patch"
     }
   }
 }

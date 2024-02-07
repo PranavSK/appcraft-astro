@@ -1,6 +1,6 @@
 ---
 import { Plus } from '@/components/icons'
-import { CollectionTable } from '@/components/navigation/collection-table'
+import { ContentCollectionTable } from '@/components/navigation/content-collection-table'
 import { buttonVariants } from '@/components/ui/button'
 import DashboardLayout from '@/layouts/dashboard.astro'
 import { getCollection } from 'astro:content'
@@ -13,13 +13,13 @@ const collectionItems = await getCollection('slide')
   <a class={buttonVariants()} href={`/slide/create-new/edit`} slot='header'>
     Create New <Plus class='ml-4 size-4' />
   </a>
-  <CollectionTable
+  <ContentCollectionTable
     client:idle
     items={collectionItems.map(
-      ({ collection, data: { description, title }, id, slug }) => ({
+      ({ collection, data: { description, title }, slug }) => ({
         collection,
         description,
-        extension: id.split('.').pop() ?? '',
+        extension: 'md',
         slug,
         title
       })

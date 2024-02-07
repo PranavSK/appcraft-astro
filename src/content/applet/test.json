@@ -1,0 +1,143 @@
+{
+  "children": [
+    {
+      "id": "header:2dewffqr1qewg3423w",
+      "children": [
+        {
+          "id": "text:2dewffqr1qewg3423wlogo",
+          "initialState": {
+            "color": "currentColor",
+            "highlightColor": "transparent",
+            "text": "Sample text!"
+          }
+        },
+        {
+          "id": "inline-image:VjA3082iZ-",
+          "initialState": {
+            "alt": "Sample image",
+            "src": "https://picsum.photos/32"
+          }
+        },
+        {
+          "id": "inline-image:b72HZdFCwV",
+          "initialState": {
+            "alt": "Sample image",
+            "src": "https://picsum.photos/32"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grid:TqLxMlNE-i",
+      "children": [
+        {
+          "id": "rect:ByPRCAnCKB",
+          "initialState": {
+            "columnEnd": 6,
+            "columnStart": 0,
+            "rowEnd": 5,
+            "rowStart": 0,
+            "borderColor": "#1A1A1A",
+            "fillColor": "#C7C7C7"
+          }
+        },
+        {
+          "id": "animated-slider:vNfkRu0w9s",
+          "initialState": {
+            "columnEnd": 5,
+            "columnStart": 1,
+            "rowEnd": 6,
+            "rowStart": 5,
+            "interval": 200,
+            "max": 1,
+            "min": 0,
+            "onStateChange": "",
+            "onValueChange": "",
+            "state": "paused",
+            "step": 0.1,
+            "value": 0
+          }
+        },
+        {
+          "id": "paragraph:iF-gz1XGtN",
+          "initialState": {
+            "columnEnd": 4,
+            "columnStart": 0,
+            "rowEnd": 2,
+            "rowStart": 1,
+            "textAlign": "center"
+          },
+          "children": [
+            {
+              "id": "text:mrGqt_9dWn",
+              "initialState": {
+                "color": "white",
+                "highlightColor": "blue",
+                "text": "Sample text"
+              }
+            },
+            {
+              "id": "option:euYKpZa3T1",
+              "initialState": {
+                "onOpenChange": "",
+                "onValueChange": "",
+                "open": false,
+                "value": "",
+                "variant": "default"
+              },
+              "children": [
+                {
+                  "id": "option-item:gCle4Y0lic",
+                  "initialState": {
+                    "disabled": false,
+                    "text": "On the shoulders of giants"
+                  }
+                },
+                {
+                  "id": "option-item:6aFiWbm48X",
+                  "initialState": {
+                    "disabled": false,
+                    "text": "Hello World to do"
+                  },
+                  "children": [
+                    {
+                      "id": "inline-image:hvNElJxD5m",
+                      "initialState": {
+                        "alt": "Sample image",
+                        "src": "https://picsum.photos/32"
+                      }
+                    },
+                    {
+                      "id": "text:6IwEzErFx2",
+                      "initialState": {
+                        "color": "currentColor",
+                        "highlightColor": "transparent",
+                        "text": "Sample text"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "footer:FKnOh-Jfny",
+      "children": [
+        {
+          "id": "cta:kuYbzWEo9M",
+          "initialState": {
+            "disabled": false,
+            "icon": "none",
+            "label": "Next",
+            "onClick": "",
+            "variant": "default"
+          }
+        }
+      ]
+    }
+  ],
+  "id": "root"
+}
